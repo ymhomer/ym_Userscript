@@ -34,6 +34,46 @@ Here is a list of the scripts in this collection. For installation, please visit
 
 ---
 
+### Installation Guide for Userscript Managers | 腳本管理器安裝指南
+
+To use any of the scripts above, you first need to install a userscript manager extension. **Tampermonkey** and **Violentmonkey** are two popular choices.
+
+要使用上述任何腳本，你首先需要安裝一個使用者腳本管理器擴充功能。**Tampermonkey** 和 **Violentmonkey** 是兩個熱門的選擇。
+
+#### Tampermonkey
+
+1.  **Install the Extension**: Go to your browser's extension store and search for "Tampermonkey".
+    * [Chrome Web Store](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+    * [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/)
+2.  **Add to Browser**: Click "Add to Chrome" or "Add to Firefox" to install it.
+3.  **Install a Script**: Once installed, visit any of the script links above and click the "Install" button on Greasy Fork, and Tampermonkey will handle the rest.
+
+#### Tampermonkey
+
+1.  **安裝擴充功能**：前往你的瀏覽器擴充功能商店，搜尋「Tampermonkey」。
+    * [Chrome 線上應用程式商店](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+    * [Firefox 附加元件](https://addons.mozilla.org/zh-TW/firefox/addon/tampermonkey/)
+2.  **新增至瀏覽器**：點擊「新增至 Chrome」或「新增至 Firefox」進行安裝。
+3.  **安裝腳本**：安裝完成後，點擊上方任何一個腳本連結，在 Greasy Fork 頁面上點擊「安裝」按鈕，Tampermonkey 便會自動處理後續步驟。
+
+#### Violentmonkey
+
+1.  **Install the Extension**: Go to your browser's extension store and search for "Violentmonkey".
+    * [Chrome Web Store](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkjkdaopjpfmggibjchhnmr)
+    * [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/)
+2.  **Add to Browser**: Click "Add to Chrome" or "Add to Firefox" to install it.
+3.  **Install a Script**: Once installed, visit any of the script links above and click the "Install" button on Greasy Fork, and Violentmonkey will install it.
+
+#### Violentmonkey
+
+1.  **安裝擴充功能**：前往你的瀏覽器擴充功能商店，搜尋「Violentmonkey」。
+    * [Chrome 線上應用程式商店](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkjkdaopjpfmggibjchhnmr)
+    * [Firefox 附加元件](https://addons.mozilla.org/zh-TW/firefox/addon/violentmonkey/)
+2.  **新增至瀏覽器**：點擊「新增至 Chrome」或「新增至 Firefox」進行安裝。
+3.  **安裝腳本**：安裝完成後，點擊上方任何一個腳本連結，在 Greasy Fork 頁面上點擊「安裝」按鈕，Violentmonkey 便會安裝該腳本。
+
+---
+
 ### Main Links | 主要連結
 
 * **Greasy Fork Profile | Greasy Fork 個人主頁**: [https://greasyfork.org/en/users/1385858-ymhomer%E9%BB%98%E6%98%93%E5%AF%92](https://greasyfork.org/en/users/1385858-ymhomer%E9%BB%98%E6%98%93%E5%AF%92)
