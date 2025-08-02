@@ -1,0 +1,32 @@
+name: Release Userscripts
+
+on:
+  push:
+    branches:
+      - main  # 或者你的主要分支名稱，例如 master
+    paths:
+      - 'userscript/**/*.user.js' # 只在 .user.js 文件有變動時觸發
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Get changed scripts
+      id: changed-scripts
+      run: |
+        echo "changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '.user.js')" >> $GITHUB_OUTPUT
+
+    - name: Create or update releases
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        for file in ${{ steps.changed-scripts.outputs.changed_files }}; do
+          filename=$(basename "$file")
+          version=$(grep '@version' "$file" | head -1 | awk '{print $3}')
+          if [ -n "$version" ]; then
+            gh release create "v$version-$filename" "$file" --title "v$version Update for $filename" --notes "Automated release for version $version of $filename" --repo "$GITHUB_REPOSITORY" --draft --prerelease
+          fi
+        done
