@@ -34,7 +34,7 @@ A userscript to prevent your screen from sleeping. It prioritizes the modern **W
 
 #### From GitHub | 從 GitHub 安裝
 1.  Ensure you have a userscript manager like **Tampermonkey** or **Violentmonkey** installed.
-2.  Go to the direct script link: [KeepScreenAwake.user.js](https://github.com/ymhomer/ym_Userscript/raw/main/userscript/KeepScreenAwake/KeepScreenAwake.user.js).
+2.  Go to the direct script link: [KeepScreenAwake.user.js](https://raw.githubusercontent.com/ymhomer/ym_Userscript/refs/heads/main/userscript/KeepScreenAwake/KeepScreenAwake.user.js).
 3.  Your userscript manager will prompt you to install the script. Confirm the installation.
 
 ---
