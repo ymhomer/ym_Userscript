@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Custom Auto Refresh
-// @namespace    YMHOMER
+// @namespace    https://github.com/ymhomer/ym_Userscript
 // @version      2.0
 // @description  Define custom auto-refresh intervals for different websites, and manage them through a settings menu with options to view, modify, or clear.
 // @match        *://*/*
