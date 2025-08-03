@@ -9,6 +9,7 @@
 // @grant        GM_registerMenuCommand
 // @downloadURL  https://update.greasyfork.org/scripts/513942/Custom%20Auto%20Refresh.user.js
 // @updateURL    https://update.greasyfork.org/scripts/513942/Custom%20Auto%20Refresh.meta.js
+// @license      MIT
 // ==/UserScript==
 
 (function () {
