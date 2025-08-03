@@ -2,9 +2,9 @@
 // @name         Stay Awake! (Modern NoSleep)
 // @name:zh-CN   保持唤醒！(新防休眠)
 // @namespace    https://github.com/ymhomer/ym_Userscript
-// @version      0.2.0
-// @description  Prevents the screen from sleeping. Toggles a floating button via Tampermonkey menu, and shows it automatically in unsupported environments.
-// @description:zh-CN 防止屏幕自动休眠。在Tampermonkey下，通过菜单命令切换悬浮按钮的显示与隐藏，若无Tampermonkey则自动显示。
+// @version      0.2.1
+// @description  Prevents the screen from sleeping. Toggles floating UI with Tampermonkey menu, or shows it by default if unsupported.
+// @description:zh-CN 防止屏幕自动休眠。使用Tampermonkey菜单切换悬浮窗，或在无菜单支持时默认显示。
 // @author       ymhomer
 // @match        *://*/*
 // @grant        GM_addStyle
@@ -38,7 +38,6 @@
                     this._wakeLock.addEventListener('release', () => {
                         if (this.enabled) {
                            this.enabled = false;
-                           console.log('Wake Lock was released by the system.');
                            if(this.onRelease) this.onRelease();
                         }
                     });
@@ -47,10 +46,8 @@
                     await this._noSleepVideo.play();
                 }
                 this.enabled = true;
-                console.log(`NoSleep enabled (${this.wakeLockType}).`);
             } catch (err) {
                 this.enabled = false;
-                console.error(`Failed to enable NoSleep: ${err.name}, ${err.message}`);
                 throw err;
             }
         }
@@ -64,7 +61,6 @@
                 this._noSleepVideo.pause();
             }
             this.enabled = false;
-            console.log('NoSleep disabled.');
         }
 
         get isEnabled() {
@@ -95,8 +91,83 @@
     const noSleep = new ModernNoSleep();
     const isTampermonkey = typeof GM_registerMenuCommand !== 'undefined';
     let menuCommandId = null;
-    let isFloatingUIVisible = false;
-    let floatingUIContainer = null;
+    let floatingUIVisible = false;
+
+    function updateFloatingButtonState(enabled) {
+        const toggleButton = document.getElementById('nosleep-toggle-btn');
+        if (!toggleButton) return;
+        if (enabled) {
+            toggleButton.innerHTML = '☀️';
+            toggleButton.classList.add('active');
+            toggleButton.title = 'Screen lock is active. Click to disable.';
+        } else {
+            toggleButton.innerHTML = '🌙';
+            toggleButton.classList.remove('active');
+            toggleButton.title = 'Screen lock is inactive. Click to enable.';
+        }
+    }
+
+    function createFloatingButtonUI() {
+        const container = document.createElement('div');
+        container.id = 'modern-nosleep-widget';
+
+        const toggleButton = document.createElement('button');
+        toggleButton.id = 'nosleep-toggle-btn';
+        toggleButton.title = 'Toggle Screen Wake Lock';
+        toggleButton.innerHTML = '🌙';
+
+        const hideButton = document.createElement('button');
+        hideButton.id = 'nosleep-hide-btn';
+        hideButton.title = 'Hide for this session';
+        hideButton.innerHTML = '&times;';
+
+        container.appendChild(toggleButton);
+        container.appendChild(hideButton);
+        document.body.appendChild(container);
+
+        toggleButton.addEventListener('click', async () => {
+            if (noSleep.isEnabled) {
+                noSleep.disable();
+                updateFloatingButtonState(false);
+            } else {
+                try {
+                    await noSleep.enable();
+                    updateFloatingButtonState(true);
+                } catch (err) {
+                    updateFloatingButtonState(false);
+                }
+            }
+        });
+
+        hideButton.addEventListener('click', () => {
+            container.style.display = 'none';
+            floatingUIVisible = false;
+            updateMenuCommand();
+        });
+
+        noSleep.onRelease = () => {
+            updateFloatingButtonState(false);
+        };
+    }
+
+    function updateMenuCommand() {
+        if (menuCommandId) GM_unregisterMenuCommand(menuCommandId);
+        menuCommandId = GM_registerMenuCommand(
+            floatingUIVisible ? 'Hide Floating Window' : 'Show Floating Window',
+            () => {
+                const container = document.getElementById('modern-nosleep-widget');
+                if (container) {
+                    if (floatingUIVisible) {
+                        container.style.display = 'none';
+                    } else {
+                        container.style.display = 'flex';
+                    }
+                    floatingUIVisible = !floatingUIVisible;
+                }
+                updateMenuCommand();
+            }
+        );
+    }
 
     GM_addStyle(`
         #modern-nosleep-widget {
@@ -139,100 +210,16 @@
         }
     `);
 
-    function updateFloatingButtonState(enabled) {
-        const toggleButton = floatingUIContainer.querySelector('#nosleep-toggle-btn');
-        if (!toggleButton) return;
-        if (enabled) {
-            toggleButton.innerHTML = '☀️';
-            toggleButton.classList.add('active');
-            toggleButton.title = 'Screen lock is active. Click to disable.';
-        } else {
-            toggleButton.innerHTML = '🌙';
-            toggleButton.classList.remove('active');
-            toggleButton.title = 'Screen lock is inactive. Click to enable.';
-        }
-    }
-
-    function createFloatingButtonUI() {
-        if (floatingUIContainer) return floatingUIContainer;
-        const container = document.createElement('div');
-        container.id = 'modern-nosleep-widget';
-
-        const toggleButton = document.createElement('button');
-        toggleButton.id = 'nosleep-toggle-btn';
-        toggleButton.title = 'Toggle Screen Wake Lock';
-        toggleButton.innerHTML = '🌙';
-
-        const hideButton = document.createElement('button');
-        hideButton.id = 'nosleep-hide-btn';
-        hideButton.title = 'Hide for this session';
-        hideButton.innerHTML = '&times;';
-
-        container.appendChild(toggleButton);
-        container.appendChild(hideButton);
-
-        toggleButton.addEventListener('click', async () => {
-            if (noSleep.isEnabled) {
-                noSleep.disable();
-            } else {
-                try {
-                    await noSleep.enable();
-                } catch (err) {
-                    console.error('Failed to enable wake lock from button:', err);
-                }
-            }
-        });
-
-        hideButton.addEventListener('click', () => {
-            toggleFloatingUI(false);
-        });
-
-        floatingUIContainer = container;
-        noSleep.onRelease = () => {
-            updateFloatingButtonState(false);
-        };
-        return floatingUIContainer;
-    }
-
-    function updateMenuCommand() {
-        if (menuCommandId) GM_unregisterMenuCommand(menuCommandId);
-        menuCommandId = GM_registerMenuCommand(
-            isFloatingUIVisible ? '🌙 Hide Floating Window' : '☀️ Show Floating Window',
-            () => {
-                toggleFloatingUI(!isFloatingUIVisible);
-            }
-        );
-    }
-
-    function toggleFloatingUI(show) {
-        if (show) {
-            if (!floatingUIContainer) {
-                createFloatingButtonUI();
-            }
-            if (!document.body.contains(floatingUIContainer)) {
-                document.body.appendChild(floatingUIContainer);
-            }
-        } else {
-            if (document.body.contains(floatingUIContainer)) {
-                document.body.removeChild(floatingUIContainer);
-            }
-            if (noSleep.isEnabled) {
-                noSleep.disable();
-            }
-        }
-        isFloatingUIVisible = show;
-        if (isTampermonkey) {
-            updateMenuCommand();
-        }
-    }
+    createFloatingButtonUI();
 
     if (isTampermonkey) {
+        const container = document.getElementById('modern-nosleep-widget');
+        if (container) {
+            container.style.display = 'none';
+        }
         updateMenuCommand();
     } else {
-        toggleFloatingUI(true);
-        noSleep.onRelease = () => {
-            updateFloatingButtonState(false);
-        };
+        floatingUIVisible = true;
     }
-
 })();
+
