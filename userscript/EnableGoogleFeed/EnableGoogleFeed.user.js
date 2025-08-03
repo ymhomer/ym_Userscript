@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Google Discover Toggle
-// @namespace    YMHOMER
+// @namespace    https://github.com/ymhomer/ym_Userscript
 // @version      1.0
 // @description  Toggle Google Discover by setting ?gl=nz persistently, preserving other query parameters
 // @author       ymhomer
