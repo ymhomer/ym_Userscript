@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Study Timer
-// @namespace    YMHOMER
+// @namespace    https://github.com/ymhomer/ym_Userscript
 // @version      2.0
 // @description  Records webpage study time and displays a floating timer window in the upper right corner, with exportable study logs
 // @match        *://*/*
