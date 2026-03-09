@@ -95,7 +95,10 @@ Keyboard shortcuts and touch gestures are supported.
 ### From Greasy Fork | 從 Greasy Fork 安裝
 
 1. Install a userscript manager such as **Tampermonkey** or **Violentmonkey**.
-2. Visit the script page on Greasy Fork.
+2. Visit the script page:
+
+https://greasyfork.org/en/scripts/569067-universal-manga-reader
+
 3. Click **Install this script**.
 
 ### From GitHub | 從 GitHub 安裝
